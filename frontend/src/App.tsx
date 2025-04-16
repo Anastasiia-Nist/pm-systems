@@ -4,6 +4,7 @@ import BoardsPage from './pages/boards/BoardsPage'
 import BoardPage from './pages/boards/BoardPage'
 import IssuesPage from './pages/issues/IssuesPage'
 import NotFoundPage from './pages/NotFoundPage'
+import './index.css'
 
 const routes = [
   { path: '/', element: <Navigate to="/boards" replace /> },
