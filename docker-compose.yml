@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pm-systems-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - pm-systems-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pm-systems-frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - pm-systems-network
+
+networks:
+  pm-systems-network:
+    driver: bridge
