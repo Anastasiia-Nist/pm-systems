@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import Layout from '@/layout/Layout'
 import BoardsPage from './pages/boards/BoardsPage'
 import BoardPage from './pages/boards/BoardPage'
 import IssuesPage from './pages/issues/IssuesPage'
@@ -16,13 +17,13 @@ const routes = [
 
 export default function App() {
   return (
-    <>
-      <ToastContainer />
+    <Layout>
       <Routes>
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
       </Routes>
-    </>
+      <ToastContainer />
+    </Layout>
   )
 }
