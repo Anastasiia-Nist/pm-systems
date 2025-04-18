@@ -1,4 +1,5 @@
 import { User } from './user'
+import { Board } from './boards'
 
 export enum TaskPriority {
   Low = 'Low',
@@ -24,9 +25,11 @@ export interface Task {
 }
 
 export interface TaskFilters {
-  priorities: TaskPriority[]
-  statuses: TaskStatus[]
+  boards: Board[]
+  statuses: { id: TaskStatus }[]
 }
 
-export type FilterKey = 'priorities' | 'statuses'
-export type FilterValue = TaskPriority | TaskStatus
+export type FilterKey = 'boards' | 'statuses'
+export type FilterValue = Board | { id: TaskStatus }
+
+export type SearchType = 'title' | 'assignee'

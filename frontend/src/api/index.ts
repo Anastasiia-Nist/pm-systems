@@ -1,1 +1,2 @@
-export * from './endpoints/issues/issues'
+export * from './endpoints/issues'
+export * from './endpoints/boards'

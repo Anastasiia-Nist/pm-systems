@@ -6,6 +6,7 @@ export interface UiFilterGroup {
   options: {
     value: string
     checked: boolean
+    label?: string
   }[]
 }
 
@@ -31,10 +32,14 @@ export default function UiFilter({
       {groups.map(({ key, title, options }) => (
         <fieldset key={key}>
           <legend>{title}</legend>
-          {options.map(({ value, checked }) => (
-            <label key={value}>
-              <input type="checkbox" checked={checked} onChange={() => onToggle(key, value)} />
-              {value}
+          {options.map((option, index) => (
+            <label key={index}>
+              <input
+                type="checkbox"
+                checked={option.checked}
+                onChange={() => onToggle(key, option.value)}
+              />
+              {option?.label ?? option.value}
             </label>
           ))}
         </fieldset>
