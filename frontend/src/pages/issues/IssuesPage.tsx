@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
 import Card from '@components/common/Card'
-import { getAllBoards, getAllTasks } from '@/api'
 import { toast } from 'react-toastify'
+import { useUserStore } from '@/store/useUserStore'
+import { useTaskStore } from '@/store/useTaskStore'
+import { useBoardStore } from '@/store/useBoardStore'
 import SearchInput from '@/components/common/Search/SearchInput'
 import SearchTypeSelector from '@/components/common/Search/SearchTypeSelector'
 import TaskFilter from '@/components/pages/issues/TaskFilter'
+import UiButton from '@components/ui/UiButton'
 import { searchTypes, clearedTaskFilters } from '@/components/pages/issues/constants'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { Task, SearchType, TaskFilters, FilterValue } from '@/types/task'
-import { Board } from '@/types/boards'
 
 export default function IssuesPage() {
-  const [boards, setBoards] = useState<Board[]>([])
-  const [tasks, setTasks] = useState<Task[]>([])
+  const { fetchUsers } = useUserStore()
+  const { tasks, fetchTasks } = useTaskStore()
+  const { fetchBoards } = useBoardStore()
+
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -19,24 +24,18 @@ export default function IssuesPage() {
 
   const [filters, setFilters] = useState<TaskFilters>(clearedTaskFilters)
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const boards = await getAllBoards()
-        setBoards(boards)
-        const tasks = await getAllTasks()
-        setTasks(tasks)
-        setFilteredTasks(tasks)
-        console.log('Проекты успешно загружены:', boards)
-        console.log('Задачи успешно загружены:', tasks)
-      } catch (error) {
-        console.error('Ошибка при загрузке задач:', error)
-        toast.error('Не удалось загрузить задачи')
-      }
-    }
+  const { handleClick: handleEditClick } = useModalNavigation('edit')
+  const { handleClick: handleCreateClick } = useModalNavigation('create')
 
-    fetchTasks()
-  }, [])
+  useEffect(() => {
+    fetchUsers().catch(() => toast.error('Не удалось загрузить пользователей'))
+    fetchBoards().catch(() => toast.error('Ошибка загрузки досок'))
+    fetchTasks().catch(() => toast.error('Не удалось загрузить задачи'))
+  }, [fetchUsers, fetchBoards, fetchTasks])
+
+  useEffect(() => {
+    setFilteredTasks(tasks)
+  }, [tasks])
 
   const filterTasks = (query: string, type: SearchType, filters: TaskFilters) => {
     const normalize = (str: string = '') => str.toLowerCase()
@@ -96,6 +95,10 @@ export default function IssuesPage() {
     filterTasks(searchQuery, searchType, clearedTaskFilters)
   }
 
+  const handleCardClick = (boardId: number, taskId: number) => {
+    handleEditClick(boardId, taskId)
+  }
+
   return (
     <div>
       <h1>Задачи</h1>
@@ -108,7 +111,6 @@ export default function IssuesPage() {
         <SearchInput onSearch={onSearch} placeholder="Поиск" />
       </div>
       <TaskFilter
-        boards={boards}
         filters={filters}
         onToggle={handleToggleFilters}
         onSubmit={handleApplyFilters}
@@ -117,16 +119,21 @@ export default function IssuesPage() {
       <ul>
         {filteredTasks.map((task) => (
           <li key={task.id}>
-            <Card title={task.title} size="medium" collaps>
-              <p>{task.description}</p>
-              <p>Приоритет: {task.priority}</p>
-              <p>Статус: {task.status}</p>
-              <p>Доска: {task.boardName}</p>
-              <p>Исполнитель: {task.assignee.fullName}</p>
-            </Card>
+            <Card
+              title={task.title}
+              size="medium"
+              onClick={() => handleCardClick(task.boardId, task.id)}
+            />
           </li>
         ))}
       </ul>
+
+      <UiButton
+        buttonText="Создать задачу"
+        onClick={handleCreateClick}
+        type="button"
+        disabled={false}
+      />
     </div>
   )
 }

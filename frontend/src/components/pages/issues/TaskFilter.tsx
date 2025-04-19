@@ -1,23 +1,18 @@
 import { useMemo } from 'react'
+import { useBoardStore } from '@/store/useBoardStore'
 import UiFilter from '@/components/ui/UiFilter'
 import { TaskStatus, TaskFilters, FilterValue } from '@/types/task'
 import { Board } from '@/types/boards'
 
 interface TaskFilterProps {
-  boards: Board[]
   filters: TaskFilters
   onToggle: (key: keyof TaskFilters, value: FilterValue) => void
   onSubmit: (e: React.FormEvent) => void
   onReset: () => void
 }
 
-export default function TaskFilter({
-  boards,
-  filters,
-  onToggle,
-  onSubmit,
-  onReset,
-}: TaskFilterProps) {
+export default function TaskFilter({ filters, onToggle, onSubmit, onReset }: TaskFilterProps) {
+  const boards: Board[] = useBoardStore((state) => state.boards)
   const filterGroups = useMemo(
     () => [
       {

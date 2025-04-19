@@ -23,6 +23,22 @@ export interface Task {
   boardName: string
   assignee: User
 }
+export type SelectOption = {
+  value: string | number
+  label: string
+}
+export type TaskFormField = {
+  name: string
+  label: string
+  type: string
+  options?: SelectOption[]
+  required: boolean
+  disabled?: boolean
+  minLength?: number
+  maxLength?: number
+  hidden?: (modalType: string) => boolean
+  getOptions?: (data: User[] | Board[]) => SelectOption[]
+}
 
 export interface TaskFilters {
   boards: Board[]
@@ -33,3 +49,13 @@ export type FilterKey = 'boards' | 'statuses'
 export type FilterValue = Board | { id: TaskStatus }
 
 export type SearchType = 'title' | 'assignee'
+
+export type TaskFormData = {
+  [key: string]: string | number | null
+  title: string
+  description: string
+  priority: TaskPriority | null
+  status: TaskStatus | null
+  boardId: number | null
+  assigneeId: number | null
+}

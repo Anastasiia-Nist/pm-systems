@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import UiButton from '@components/ui/UiButton'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
+
 export default function Header() {
-  const handleClick = () => {
-    console.log('Создать задачу')
-  }
+  const { handleClick } = useModalNavigation('create')
   return (
     <header>
       <nav>

@@ -1,25 +1,15 @@
-import { useState } from 'react'
-
 type CardProps = {
   title?: string
   size?: 'small' | 'medium' | 'large'
-  collaps?: boolean
-  children: React.ReactNode
+  children?: React.ReactNode
+  onClick?: () => void
 }
 
-export default function Card({ title, size = 'medium', collaps = false, children }: CardProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-
-  const handleClick = () => {
-    if (collaps) {
-      setIsCollapsed((prev) => !prev)
-    }
-  }
-
+export default function Card({ title, size = 'medium', children, onClick }: CardProps) {
   return (
-    <div className={`card card--${size}`} onClick={handleClick}>
+    <div className={`card card--${size}`} onClick={onClick}>
       <h3>{title}</h3>
-      {isCollapsed && <div>{children}</div>}
+      {children && <div>{children}</div>}
     </div>
   )
 }

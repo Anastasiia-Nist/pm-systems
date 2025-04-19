@@ -1,12 +1,11 @@
-interface UiInputProps {
+interface UiInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   type?: React.HTMLInputTypeAttribute
-  value?: string
+  value?: string | number
   checked?: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: () => void
   placeholder?: string
-  name?: string
 }
 
 export default function UiInput({
@@ -17,7 +16,7 @@ export default function UiInput({
   onKeyDown,
   checked,
   placeholder = 'Введите текст...',
-  name = '',
+  ...commonProps
 }: UiInputProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -31,10 +30,10 @@ export default function UiInput({
       <input
         type={type}
         value={value}
-        name={name}
         checked={type === 'radio' ? checked : undefined}
-        onChange={onChange}
         placeholder={placeholder}
+        {...commonProps}
+        onChange={onChange}
         onKeyDown={type === 'text' ? handleKeyDown : undefined}
       />
     </div>

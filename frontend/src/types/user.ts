@@ -1,6 +1,10 @@
 export interface User {
-  id: number
-  fullName: string
-  email: string
   avatarUrl: string
+  description: string
+  email: string
+  fullName: string
+  id: number
+  tasksCount: number
+  teamId: number
+  teamName: string
 }

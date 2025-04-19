@@ -5,6 +5,7 @@ import BoardsPage from './pages/boards/BoardsPage'
 import BoardPage from './pages/boards/BoardPage'
 import IssuesPage from './pages/issues/IssuesPage'
 import NotFoundPage from './pages/NotFoundPage'
+import TaskFormModal from '@/components/pages/issues/TaskFormModal'
 import './index.css'
 
 const routes = [
@@ -24,6 +25,7 @@ export default function App() {
         ))}
       </Routes>
       <ToastContainer />
+      <TaskFormModal />
     </Layout>
   )
 }
