@@ -6,13 +6,14 @@ import BoardPage from './pages/boards/BoardPage'
 import IssuesPage from './pages/issues/IssuesPage'
 import NotFoundPage from './pages/NotFoundPage'
 import TaskFormModal from '@/components/pages/issues/TaskFormModal'
+import { BOARDS_PATH, BOARD_ID_PATH, ISSUES_PATH } from './constants'
 import './index.css'
 
 const routes = [
-  { path: '/', element: <Navigate to="/boards" replace /> },
-  { path: '/boards', element: <BoardsPage /> },
-  { path: '/board/:id', element: <BoardPage /> },
-  { path: '/issues', element: <IssuesPage /> },
+  { path: '/', element: <Navigate to={BOARDS_PATH} replace /> },
+  { path: BOARDS_PATH, element: <BoardsPage /> },
+  { path: BOARD_ID_PATH + '/:boardId', element: <BoardPage /> },
+  { path: ISSUES_PATH, element: <IssuesPage /> },
   { path: '*', element: <NotFoundPage /> },
 ]
 

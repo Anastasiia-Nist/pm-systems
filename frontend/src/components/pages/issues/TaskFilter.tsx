@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useBoardStore } from '@/store/useBoardStore'
 import UiFilter from '@/components/ui/UiFilter'
-import { TaskStatus, TaskFilters, FilterValue } from '@/types/task'
+import { TaskStatus, TaskFilters, FilterKey, FilterValue } from '@/types/task'
 import { Board } from '@/types/boards'
 
 interface TaskFilterProps {
@@ -38,7 +38,7 @@ export default function TaskFilter({ filters, onToggle, onSubmit, onReset }: Tas
   )
 
   return (
-    <UiFilter
+    <UiFilter<FilterKey, FilterValue>
       groups={filterGroups}
       onToggle={onToggle}
       onSubmit={onSubmit}

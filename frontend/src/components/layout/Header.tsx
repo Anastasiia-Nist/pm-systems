@@ -1,16 +1,17 @@
 import { NavLink } from 'react-router-dom'
 import UiButton from '@components/ui/UiButton'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
+import { BOARDS_PATH, ISSUES_PATH } from '@/constants/index'
 
 export default function Header() {
   const { handleClick } = useModalNavigation('create')
   return (
     <header>
       <nav>
-        <NavLink to="/issues" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to={ISSUES_PATH} className={({ isActive }) => (isActive ? 'active' : '')}>
           Все задачи
         </NavLink>
-        <NavLink to="/boards" className={({ isActive }) => (isActive ? 'active' : '')}>
+        <NavLink to={BOARDS_PATH} className={({ isActive }) => (isActive ? 'active' : '')}>
           Проекты
         </NavLink>
       </nav>

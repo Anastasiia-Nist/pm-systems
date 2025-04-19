@@ -20,7 +20,7 @@ export async function getTaskById(taskId: number) {
   }
 }
 
-export async function createTask(taskData: any) {
+export async function createTask(taskData: unknown) {
   try {
     const { data } = await api.post('/tasks/create', taskData)
     return data
@@ -30,7 +30,7 @@ export async function createTask(taskData: any) {
   }
 }
 
-export async function updateTask(taskId: string, taskData: any) {
+export async function updateTask(taskId: string, taskData: unknown) {
   try {
     const { data } = await api.put(`/tasks/update/${taskId}`, taskData)
     return data

@@ -14,7 +14,7 @@ import { Task, SearchType, TaskFilters, FilterValue } from '@/types/task'
 
 export default function IssuesPage() {
   const { fetchUsers } = useUserStore()
-  const { tasks, fetchTasks } = useTaskStore()
+  const { tasks, isLoading, fetchTasks } = useTaskStore()
   const { fetchBoards } = useBoardStore()
 
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
@@ -116,17 +116,21 @@ export default function IssuesPage() {
         onSubmit={handleApplyFilters}
         onReset={handleResetFilters}
       />
-      <ul>
-        {filteredTasks.map((task) => (
-          <li key={task.id}>
-            <Card
-              title={task.title}
-              size="medium"
-              onClick={() => handleCardClick(task.boardId, task.id)}
-            />
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <p>Загрузка...</p>
+      ) : (
+        <ul>
+          {filteredTasks.map((task) => (
+            <li key={task.id}>
+              <Card
+                title={task.title}
+                size="medium"
+                onClick={() => handleCardClick(task.boardId, task.id)}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
 
       <UiButton
         buttonText="Создать задачу"

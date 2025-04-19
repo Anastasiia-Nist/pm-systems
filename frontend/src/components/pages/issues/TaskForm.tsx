@@ -9,6 +9,7 @@ import { useUserStore } from '@/store/useUserStore'
 import { useBoardStore } from '@/store/useBoardStore'
 import { TaskFormData } from '@/types/task'
 import UiButton from '@/components/ui/UiButton'
+import { BOARD_ID_PATH, ISSUES_PATH } from '@/constants/index'
 
 type TaskFormProps = {
   onSubmit: (values: TaskFormData) => void
@@ -29,7 +30,8 @@ export default function TaskForm({
 
   const location = useLocation()
   const query = new URLSearchParams(location.search)
-  const isOnIssuesPage = location.pathname === '/issues'
+  const isOnIssuesPage = location.pathname === ISSUES_PATH
+  const isOnBoardPage = location.pathname.startsWith(BOARD_ID_PATH)
   const boardId = query.get('boardId')
 
   const isShowNavigationToBoard = isOnIssuesPage && boardId
@@ -46,9 +48,11 @@ export default function TaskForm({
     return TASK_FORM_FIELDS.map((field) => {
       if (field.getOptions) {
         const data = field.name === 'assigneeId' ? users : boards
+        const disabled = field.name === 'boardId' && isOnBoardPage
         return {
           ...field,
           options: field.getOptions(data),
+          disabled,
         }
       }
 
@@ -98,7 +102,7 @@ export default function TaskForm({
 
       {buttonText && <UiButton buttonText={buttonText} type="submit" />}
 
-      {isShowNavigationToBoard && <Link to={`/board/${boardId}`}>Перейти к доске</Link>}
+      {isShowNavigationToBoard && <Link to={`${BOARD_ID_PATH}/${boardId}`}>Перейти к доске</Link>}
     </UIForm>
   )
 }

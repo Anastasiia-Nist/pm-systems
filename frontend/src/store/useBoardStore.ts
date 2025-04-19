@@ -4,12 +4,16 @@ import { Board } from '@/types/boards'
 
 type BoardStore = {
   boards: Board[]
+  currentBoard: Board | null
+  setCurrentBoard: (board: Board | null) => void
   isLoading: boolean
   fetchBoards: () => Promise<void>
 }
 
 export const useBoardStore = create<BoardStore>((set) => ({
   boards: [],
+  currentBoard: null,
+  setCurrentBoard: (board) => set({ currentBoard: board }),
   isLoading: false,
 
   fetchBoards: async () => {
