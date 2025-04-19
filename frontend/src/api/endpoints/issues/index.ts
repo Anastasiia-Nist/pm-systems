@@ -39,3 +39,13 @@ export async function updateTask(taskId: string, taskData: unknown) {
     throw error
   }
 }
+
+export async function updateTaskStatus(taskId: string, taskData: unknown) {
+  try {
+    const { data } = await api.put(`/tasks/updateStatus/${taskId}`, taskData)
+    return data
+  } catch (error) {
+    console.error(`requestManager(/tasks/updateStatus/${taskId}):`, error)
+    throw error
+  }
+}

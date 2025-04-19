@@ -33,6 +33,7 @@ export default function TaskForm({
   const isOnIssuesPage = location.pathname === ISSUES_PATH
   const isOnBoardPage = location.pathname.startsWith(BOARD_ID_PATH)
   const boardId = query.get('boardId')
+  const modalType = query.get('modalTypeTask')
 
   const isShowNavigationToBoard = isOnIssuesPage && boardId
 
@@ -48,7 +49,7 @@ export default function TaskForm({
     return TASK_FORM_FIELDS.map((field) => {
       if (field.getOptions) {
         const data = field.name === 'assigneeId' ? users : boards
-        const disabled = field.name === 'boardId' && isOnBoardPage
+        const disabled = field.name === 'boardId' && isOnBoardPage && modalType === 'edit'
         return {
           ...field,
           options: field.getOptions(data),
