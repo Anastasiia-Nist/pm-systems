@@ -22,6 +22,14 @@ class ApiClient {
   async get(endpoint: string) {
     return this.request(endpoint, { method: 'GET' })
   }
+
+  async post(endpoint: string, data: any) {
+    return this.request(endpoint, { method: 'POST', body: JSON.stringify(data) })
+  }
+
+  async put(endpoint: string, data: any) {
+    return this.request(endpoint, { method: 'PUT', body: JSON.stringify(data) })
+  }
 }
 
 export const api = new ApiClient(import.meta.env.VITE_API_URL)

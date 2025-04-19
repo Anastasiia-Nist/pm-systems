@@ -9,3 +9,33 @@ export async function getAllTasks() {
     throw error
   }
 }
+
+export async function getTaskById(taskId: number) {
+  try {
+    const { data } = await api.get(`/tasks/${taskId}`)
+    return data
+  } catch (error) {
+    console.error(`requestManager(/tasks/${taskId}):`, error)
+    throw error
+  }
+}
+
+export async function createTask(taskData: any) {
+  try {
+    const { data } = await api.post('/tasks/create', taskData)
+    return data
+  } catch (error) {
+    console.error('requestManager(/tasks/create):', error)
+    throw error
+  }
+}
+
+export async function updateTask(taskId: string, taskData: any) {
+  try {
+    const { data } = await api.put(`/tasks/update/${taskId}`, taskData)
+    return data
+  } catch (error) {
+    console.error(`requestManager(/tasks/update/${taskId}):`, error)
+    throw error
+  }
+}
