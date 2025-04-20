@@ -35,7 +35,6 @@ export function DraggableTask({ task, onClick }: { task: Task; onClick: () => vo
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
   }
 
-
   return (
     <>
       <li

@@ -1,8 +1,9 @@
 .droppable {
-    border-radius: 10px;
-    padding: 8px;
     width: 100%;
     min-height: 500px;
+    padding: 8px;
+
+    border-radius: 10px;
     background-color: #faf6f6;
 }
 
@@ -14,12 +15,15 @@
 
 .droppable__item {
     margin-top: 10px;
+
     cursor: 'grab';
+
     touch-action: 'none';
 }
 
 .droppable__list {
     display: flex;
     flex-direction: column;
+
     padding: 10px;
 }

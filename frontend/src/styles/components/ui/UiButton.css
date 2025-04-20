@@ -13,8 +13,8 @@
 }
 
 .button:hover {
-    background-color: #ffe7eb;
     color: #775c60;
+    background-color: #ffe7eb;
 }
 
 .button:disabled {
@@ -28,8 +28,9 @@
 }
 
 .button--line {
-    background-color: transparent;
     padding: 0 14px;
+
+    background-color: transparent;
 }
 .button--line:hover {
     background-color: transparent;

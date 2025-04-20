@@ -34,6 +34,7 @@ a {
 
 .title {
     margin: 0;
+
     font-size: 28px;
 }
 
@@ -62,12 +63,14 @@ a {
 }
 
 .list {
-    max-height: 500px;
-    overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 8px;
-    scroll-behavior: smooth;
+    overflow-y: auto;
+
+    max-height: 500px;
     margin: 20px 0;
+    padding-right: 8px;
+
+    scroll-behavior: smooth;
 }
 
 @media (max-width: 480px) {
@@ -82,8 +85,8 @@ a {
 }
 
 .list::-webkit-scrollbar-thumb {
-    background-color: #e3a5b0;
     border-radius: 10px;
+    background-color: #e3a5b0;
 }
 
 .Toastify {

@@ -6,12 +6,11 @@
     padding: 24px;
 
     color: #a27c82;
+    border-radius: 20px 20px 0 0;
     background-color: #ffe0e5;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 
     font-size: 20px;
-
-    border-radius: 20px 20px 0 0;
 }
 
 .footer__author {

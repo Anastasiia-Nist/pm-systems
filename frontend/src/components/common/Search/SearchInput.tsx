@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { debounce } from '@/utils/debounce'
 import UiInput from '@/components/ui/UiInput'
 import UiButton from '@/components/ui/UiButton'
-import '@/styles/components/common/Search/SearchInput.css'
+import '@/styles/components/common/SearchT/SearchInput.css'
 
 interface SearchInputProps {
   onSearch: (query: string) => void

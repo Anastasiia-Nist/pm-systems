@@ -13,7 +13,7 @@ import { TaskFormData } from '@/types/task'
 
 export default function TaskFormModal() {
   const [taskData, setTaskData] = useState<TaskFormData>(defaultTaskForm)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const { fetchTasks } = useTaskStore()
 
   const { handleClose } = useModalNavigation('close')
