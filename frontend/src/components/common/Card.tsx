@@ -1,15 +1,16 @@
+import '@/styles/components/common/Card.css'
+
 type CardProps = {
   title?: string
-  size?: 'small' | 'medium' | 'large'
   children?: React.ReactNode
   onClick?: () => void
 }
 
-export default function Card({ title, size = 'medium', children, onClick }: CardProps) {
+export default function Card({ title, children, onClick }: CardProps) {
   return (
-    <div className={`card card--${size}`} onClick={onClick}>
-      <h3>{title}</h3>
+    <article className="card" onClick={onClick}>
+      <h3 className="card__title">{title}</h3>
       {children && <div>{children}</div>}
-    </div>
+    </article>
   )
 }

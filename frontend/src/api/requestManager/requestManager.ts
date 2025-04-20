@@ -14,21 +14,23 @@ class ApiClient {
     this.baseUrl = baseUrl + this.prefixUrl
   }
 
-  private async request(endpoint: string, options: RequestInit = {}) {
-    const response = await fetch(`${this.baseUrl}${endpoint}`, options)
+  private async request(endpoint: string, options: RequestInit = {}, signal?: AbortSignal) {
+    const controllerOptions = { ...options, signal }
+    const response = await fetch(`${this.baseUrl}${endpoint}`, controllerOptions)
+    await new Promise((resolve) => setTimeout(resolve, 500))
     return handleResponse(response)
   }
 
-  async get(endpoint: string) {
-    return this.request(endpoint, { method: 'GET' })
+  async get(endpoint: string, signal?: AbortSignal) {
+    return this.request(endpoint, { method: 'GET' }, signal)
   }
 
-  async post(endpoint: string, data: unknown) {
-    return this.request(endpoint, { method: 'POST', body: JSON.stringify(data) })
+  async post(endpoint: string, data: unknown, signal?: AbortSignal) {
+    return this.request(endpoint, { method: 'POST', body: JSON.stringify(data) }, signal)
   }
 
-  async put(endpoint: string, data: unknown) {
-    return this.request(endpoint, { method: 'PUT', body: JSON.stringify(data) })
+  async put(endpoint: string, data: unknown, signal?: AbortSignal) {
+    return this.request(endpoint, { method: 'PUT', body: JSON.stringify(data) }, signal)
   }
 }
 

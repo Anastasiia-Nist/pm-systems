@@ -101,7 +101,7 @@ export default function TaskForm({
         )
       })}
 
-      {buttonText && <UiButton buttonText={buttonText} type="submit" />}
+      {buttonText && <UiButton type="submit">{buttonText}</UiButton>}
 
       {isShowNavigationToBoard && <Link to={`${BOARD_ID_PATH}/${boardId}`}>Перейти к доске</Link>}
     </UIForm>

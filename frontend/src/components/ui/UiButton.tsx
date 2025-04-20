@@ -1,19 +1,24 @@
+import clsx from 'clsx'
+import '@/styles/components/ui/UiButton.css'
+
 type ButtonProps = {
-  buttonText: string
+  children: React.ReactNode
   onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
+  className?: string
 }
 
 export default function UiButton({
-  buttonText,
+  children,
   onClick,
   type = 'button',
   disabled = false,
+  className,
 }: ButtonProps) {
   return (
-    <button type={type} onClick={onClick} disabled={disabled}>
-      {buttonText}
+    <button className={clsx('button', className)} type={type} onClick={onClick} disabled={disabled}>
+      {children}
     </button>
   )
 }

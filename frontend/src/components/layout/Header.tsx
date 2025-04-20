@@ -2,12 +2,13 @@ import { NavLink } from 'react-router-dom'
 import UiButton from '@components/ui/UiButton'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { BOARDS_PATH, ISSUES_PATH } from '@/constants/index'
+import '@/styles/components/layout/Header.css'
 
 export default function Header() {
   const { handleClick } = useModalNavigation('create')
   return (
-    <header>
-      <nav>
+    <header className="header">
+      <nav className="header__nav">
         <NavLink to={ISSUES_PATH} className={({ isActive }) => (isActive ? 'active' : '')}>
           Все задачи
         </NavLink>
@@ -15,7 +16,9 @@ export default function Header() {
           Проекты
         </NavLink>
       </nav>
-      <UiButton buttonText="Создать задачу" onClick={handleClick} type="button" disabled={false} />
+      <UiButton className="button--light" onClick={handleClick} type="button" disabled={false}>
+        Создать задачу
+      </UiButton>
     </header>
   )
 }

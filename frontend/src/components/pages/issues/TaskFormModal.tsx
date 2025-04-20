@@ -5,6 +5,7 @@ import { useTaskStore } from '@/store/useTaskStore'
 import { toast } from 'react-toastify'
 import UiModal from '@components/ui/UiModal'
 import TaskForm from '@components/pages/issues/TaskForm'
+import UiLoader from '@components/ui/UiLoader'
 import { defaultTaskForm } from '@components/pages/issues/constants'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { createTask, updateTask } from '@/api'
@@ -27,10 +28,9 @@ export default function TaskFormModal() {
 
   useEffect(() => {
     const fetchTaskData = async () => {
-      setIsLoading(true)
-
       if (modalType === 'edit' && taskId) {
         try {
+          setIsLoading(true)
           const task = await getTaskById(Number(taskId))
           setTaskData({
             title: task.title,
@@ -49,7 +49,6 @@ export default function TaskFormModal() {
         }
       } else {
         setTaskData(defaultTaskForm)
-        setIsLoading(false)
       }
     }
 
@@ -101,15 +100,12 @@ export default function TaskFormModal() {
       <div>
         <h2>{modalsMap[modalType as 'create' | 'edit']?.title}</h2>
 
-        {isLoading ? (
-          <p>Загрузка...</p>
-        ) : (
-          <TaskForm
-            onSubmit={(data) => handleSubmitForm(data)}
-            initialData={taskData}
-            buttonText={modalsMap[modalType as 'create' | 'edit']?.buttonText}
-          />
-        )}
+        {isLoading && <UiLoader />}
+        <TaskForm
+          onSubmit={(data) => handleSubmitForm(data)}
+          initialData={taskData}
+          buttonText={modalsMap[modalType as 'create' | 'edit']?.buttonText}
+        />
       </div>
     </UiModal>
   )

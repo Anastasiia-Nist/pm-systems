@@ -1,4 +1,5 @@
 import { api } from '@/api/requestManager/requestManager'
+import { TaskFormData, TaskStatus } from '@/types/task'
 
 export async function getAllTasks() {
   try {
@@ -20,7 +21,7 @@ export async function getTaskById(taskId: number) {
   }
 }
 
-export async function createTask(taskData: unknown) {
+export async function createTask(taskData: TaskFormData) {
   try {
     const { data } = await api.post('/tasks/create', taskData)
     return data
@@ -30,7 +31,7 @@ export async function createTask(taskData: unknown) {
   }
 }
 
-export async function updateTask(taskId: string, taskData: unknown) {
+export async function updateTask(taskId: string, taskData: TaskFormData) {
   try {
     const { data } = await api.put(`/tasks/update/${taskId}`, taskData)
     return data
@@ -40,7 +41,7 @@ export async function updateTask(taskId: string, taskData: unknown) {
   }
 }
 
-export async function updateTaskStatus(taskId: string, taskData: unknown) {
+export async function updateTaskStatus(taskId: string, taskData: { status: TaskStatus }) {
   try {
     const { data } = await api.put(`/tasks/updateStatus/${taskId}`, taskData)
     return data

@@ -2,20 +2,28 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import UiDraggable from '@components/ui/UiDraggable'
+import Card from '@/components/common/Card'
+import UiLoader from '@components/ui/UiLoader'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { getBoardById, updateTaskStatus } from '@/api'
 import { BOARDS_PATH } from '@/constants'
 import { useBoardStore } from '@/store/useBoardStore'
 import { Board } from '@/types/boards'
 import { Task, TaskStatus } from '@/types/task'
+import '@/styles/pages/boards/BoardPage.css'
 
 import {
   DndContext,
   closestCenter,
-  PointerSensor,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  UniqueIdentifier,
 } from '@dnd-kit/core'
 
 export default function BoardPage() {
@@ -25,6 +33,8 @@ export default function BoardPage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [isBoardsLoaded, setIsBoardsLoaded] = useState(false)
   const { handleClick: handleEditClick } = useModalNavigation('edit')
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const statusLabels: Record<TaskStatus, string> = {
     [TaskStatus.Backlog]: 'Бэклог',
@@ -36,6 +46,7 @@ export default function BoardPage() {
     const loadBoard = async () => {
       try {
         if (boardId && +boardId) {
+          setIsLoading(true)
           const tasks = await getBoardById(+boardId)
           setTasks(tasks)
           if (currentBoard?.id === Number(boardId)) {
@@ -49,6 +60,8 @@ export default function BoardPage() {
       } catch (error) {
         console.error('Ошибка при загрузке досок:', error)
         toast.error('Не удалось загрузить доски')
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -72,7 +85,21 @@ export default function BoardPage() {
     handleEditClick(currentBoard?.id, taskId)
   }
 
-  const sensors = useSensors(useSensor(PointerSensor))
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  })
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  })
+
+  const keyboardSensor = useSensor(KeyboardSensor)
+
+  const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor)
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
@@ -86,22 +113,38 @@ export default function BoardPage() {
     }
 
     try {
+      setActiveId(null)
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
+      )
       await updateTaskStatus(String(active.id), { status: newStatus })
     } catch (error) {
       console.error('Не удалось обновить статус задачи:', error)
       toast.error('Не удалось обновить статус задачи')
+      if (boardId && +boardId) {
+        await getBoardById(+boardId)
+        setTasks(tasks)
+      }
     }
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task))
-    )
+  }
+  const handleDragStart = (event: DragStartEvent) => {
+    const activeId = event.active.id
+    setActiveId(activeId)
   }
 
   return (
-    <>
-      <h1>Проект: {currentBoard?.name}</h1>
-      <div style={{ display: 'flex', gap: '16px' }}>
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <div style={{ display: 'flex', gap: '16px' }}>
+    <section className="board">
+      <h1 className="title">Проект: {currentBoard?.name}</h1>
+      {isLoading ? (
+        <UiLoader />
+      ) : (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="board__columns">
             {Object.values(TaskStatus).map((status) => (
               <UiDraggable
                 key={status}
@@ -112,8 +155,11 @@ export default function BoardPage() {
               />
             ))}
           </div>
+          <DragOverlay dropAnimation={null}>
+            {activeId ? <Card title={tasks.find((task) => task.id === activeId)?.title} /> : null}
+          </DragOverlay>
         </DndContext>
-      </div>
-    </>
+      )}
+    </section>
   )
 }

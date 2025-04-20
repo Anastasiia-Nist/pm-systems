@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Card from '@components/common/Card'
 import { toast } from 'react-toastify'
+import { requestHelper } from '@/utils/requestHelper'
 import { useUserStore } from '@/store/useUserStore'
 import { useTaskStore } from '@/store/useTaskStore'
 import { useBoardStore } from '@/store/useBoardStore'
@@ -8,29 +9,45 @@ import SearchInput from '@/components/common/Search/SearchInput'
 import SearchTypeSelector from '@/components/common/Search/SearchTypeSelector'
 import TaskFilter from '@/components/pages/issues/TaskFilter'
 import UiButton from '@components/ui/UiButton'
+import UiLoader from '@components/ui/UiLoader'
 import { searchTypes, clearedTaskFilters } from '@/components/pages/issues/constants'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { Task, SearchType, TaskFilters, FilterValue } from '@/types/task'
+import '@/styles/pages/IssuesPage.css'
 
 export default function IssuesPage() {
-  const { fetchUsers } = useUserStore()
-  const { tasks, isLoading, fetchTasks } = useTaskStore()
-  const { fetchBoards } = useBoardStore()
+  const { isLoadingUsers, fetchUsers } = useUserStore()
+  const { tasks, isLoadingTasks, fetchTasks } = useTaskStore()
+  const { isLoadingBoards, fetchBoards } = useBoardStore()
 
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
+  const [showFilters, setShowFilters] = useState(false)
 
   const [searchQuery, setSearchQuery] = useState('')
   const [searchType, setSearchType] = useState<SearchType>('title')
 
-  const [filters, setFilters] = useState<TaskFilters>(clearedTaskFilters)
+  const [checkedFilters, setCheckedFilters] = useState<TaskFilters>(clearedTaskFilters)
+  const [appliedFilters, setAppliedFilters] = useState<TaskFilters>(clearedTaskFilters)
 
   const { handleClick: handleEditClick } = useModalNavigation('edit')
   const { handleClick: handleCreateClick } = useModalNavigation('create')
 
   useEffect(() => {
-    fetchUsers().catch(() => toast.error('Не удалось загрузить пользователей'))
-    fetchBoards().catch(() => toast.error('Ошибка загрузки досок'))
-    fetchTasks().catch(() => toast.error('Не удалось загрузить задачи'))
+    const handleFetchUsers = requestHelper(fetchUsers, () =>
+      toast.error('Не удалось загрузить пользователей')
+    )
+
+    const handleFetchBoards = requestHelper(fetchBoards, () => toast.error('Ошибка загрузки досок'))
+
+    const handleFetchTasks = requestHelper(fetchTasks, () =>
+      toast.error('Не удалось загрузить задачи')
+    )
+
+    return () => {
+      handleFetchUsers()
+      handleFetchBoards()
+      handleFetchTasks()
+    }
   }, [fetchUsers, fetchBoards, fetchTasks])
 
   useEffect(() => {
@@ -58,17 +75,17 @@ export default function IssuesPage() {
 
   const onSearch = (query: string) => {
     setSearchQuery(query)
-    filterTasks(query, searchType, filters)
+    filterTasks(query, searchType, appliedFilters)
   }
 
   const handleSearchTypeChange = (type: string) => {
     const newType = type as SearchType
     setSearchType(newType)
     if (searchQuery === '') return
-    filterTasks(searchQuery, newType, filters)
+    filterTasks(searchQuery, newType, appliedFilters)
   }
   const handleToggleFilters = (key: keyof TaskFilters, value: FilterValue) => {
-    setFilters((prev) => {
+    setCheckedFilters((prev) => {
       const updated = [...prev[key]]
       const index = updated.findIndex((item) => item.id === value.id)
 
@@ -87,11 +104,13 @@ export default function IssuesPage() {
 
   const handleApplyFilters = (e: React.FormEvent) => {
     e.preventDefault()
-    filterTasks(searchQuery, searchType, filters)
+    setAppliedFilters(checkedFilters)
+    filterTasks(searchQuery, searchType, checkedFilters)
   }
 
   const handleResetFilters = () => {
-    setFilters(clearedTaskFilters)
+    setCheckedFilters(clearedTaskFilters)
+    setAppliedFilters(clearedTaskFilters)
     filterTasks(searchQuery, searchType, clearedTaskFilters)
   }
 
@@ -99,45 +118,65 @@ export default function IssuesPage() {
     handleEditClick(boardId, taskId)
   }
 
+  const handleToggleShowFilters = () => {
+    setShowFilters(!showFilters)
+  }
+  const appliedFiltersCount = Object.values(appliedFilters).reduce((acc, filterArray) => {
+    return acc + (Array.isArray(filterArray) ? filterArray.length : 0)
+  }, 0)
   return (
-    <div>
-      <h1>Задачи</h1>
-      <div>
-        <SearchTypeSelector
-          options={searchTypes}
-          selectedValue={searchType}
-          onChange={handleSearchTypeChange}
-        />
-        <SearchInput onSearch={onSearch} placeholder="Поиск" />
-      </div>
-      <TaskFilter
-        filters={filters}
-        onToggle={handleToggleFilters}
-        onSubmit={handleApplyFilters}
-        onReset={handleResetFilters}
-      />
-      {isLoading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <ul>
-          {filteredTasks.map((task) => (
-            <li key={task.id}>
-              <Card
-                title={task.title}
-                size="medium"
-                onClick={() => handleCardClick(task.boardId, task.id)}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+    <>
+      <div className="task-toolbar">
+        <div className="task-toolbar__search">
+          <SearchInput onSearch={onSearch} placeholder="Поиск" />
+          <SearchTypeSelector
+            options={searchTypes}
+            selectedValue={searchType}
+            onChange={handleSearchTypeChange}
+          />
+          <UiButton
+            onClick={handleToggleShowFilters}
+            className="button--line task-toolbar__button"
+            type="button"
+          >
+            Фильтры
+          </UiButton>
+          {appliedFiltersCount > 0 && (
+            <div className="task-toolbar__button_badge">{appliedFiltersCount}</div>
+          )}
+        </div>
 
-      <UiButton
-        buttonText="Создать задачу"
-        onClick={handleCreateClick}
-        type="button"
-        disabled={false}
-      />
-    </div>
+        {showFilters && (
+          <div className="task-toolbar__filter">
+            <TaskFilter
+              filters={checkedFilters}
+              onToggle={handleToggleFilters}
+              onSubmit={handleApplyFilters}
+              onReset={handleResetFilters}
+            />
+          </div>
+        )}
+      </div>
+      <section className="tasks">
+        <h1 className="title">Задачи</h1>
+
+        {isLoadingUsers || isLoadingBoards || isLoadingTasks ? (
+          <UiLoader />
+        ) : (
+          <div className="list">
+            <ul className="tasks__list">
+              {filteredTasks.map((task) => (
+                <li className="tasks__item" key={task.id}>
+                  <Card title={task.title} onClick={() => handleCardClick(task.boardId, task.id)} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <UiButton onClick={handleCreateClick} type="button" disabled={false}>
+          Создать задачу
+        </UiButton>
+      </section>
+    </>
   )
 }

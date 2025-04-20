@@ -4,16 +4,16 @@ import { Task } from '@/types/task'
 
 type TaskStore = {
   tasks: Task[]
-  isLoading: boolean
+  isLoadingTasks: boolean
   fetchTasks: () => Promise<void>
 }
 
 export const useTaskStore = create<TaskStore>((set) => ({
   tasks: [],
-  isLoading: false,
+  isLoadingTasks: false,
 
   fetchTasks: async () => {
-    set({ isLoading: true })
+    set({ isLoadingTasks: true })
     try {
       const data = await getAllTasks()
       set({ tasks: data })
@@ -21,7 +21,7 @@ export const useTaskStore = create<TaskStore>((set) => ({
       console.error('Стор: Ошибка при загрузке задач:', err)
       throw err
     } finally {
-      set({ isLoading: false })
+      set({ isLoadingTasks: false })
     }
   },
 }))

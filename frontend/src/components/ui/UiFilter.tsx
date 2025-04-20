@@ -1,4 +1,5 @@
 import UiButton from '@/components/ui/UiButton'
+import '@/styles/components/ui/UiFilter.css'
 
 export interface UiFilterGroup<T> {
   key: string
@@ -28,12 +29,12 @@ export default function UiFilter<K, T>({
   showResetButton = true,
 }: UiFilterProps<K, T>) {
   return (
-    <form onSubmit={onSubmit} onReset={onReset}>
+    <form className="filter" onSubmit={onSubmit} onReset={onReset}>
       {groups.map(({ key, title, options }) => (
-        <fieldset key={key as React.Key}>
+        <fieldset className="filter__fieldset" key={key as React.Key}>
           <legend>{title}</legend>
           {options.map((option, index) => (
-            <label key={index}>
+            <label className="filter__checkbox" key={index}>
               <input
                 type="checkbox"
                 checked={option.checked}
@@ -44,8 +45,10 @@ export default function UiFilter<K, T>({
           ))}
         </fieldset>
       ))}
-      {showSubmitButton && <UiButton buttonText="Применить фильтры" type="submit" />}
-      {showResetButton && <UiButton buttonText="Очистить фильтры" type="reset" />}
+      <div className="filter__buttons">
+        {showSubmitButton && <UiButton type="submit">Применить фильтры</UiButton>}
+        {showResetButton && <UiButton type="reset">Очистить фильтры</UiButton>}
+      </div>
     </form>
   )
 }

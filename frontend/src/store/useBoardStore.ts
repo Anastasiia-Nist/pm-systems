@@ -6,7 +6,7 @@ type BoardStore = {
   boards: Board[]
   currentBoard: Board | null
   setCurrentBoard: (board: Board | null) => void
-  isLoading: boolean
+  isLoadingBoards: boolean
   fetchBoards: () => Promise<void>
 }
 
@@ -14,10 +14,10 @@ export const useBoardStore = create<BoardStore>((set) => ({
   boards: [],
   currentBoard: null,
   setCurrentBoard: (board) => set({ currentBoard: board }),
-  isLoading: false,
+  isLoadingBoards: false,
 
   fetchBoards: async () => {
-    set({ isLoading: true })
+    set({ isLoadingBoards: true })
     try {
       const data = await getAllBoards()
       set({ boards: data })
@@ -25,7 +25,7 @@ export const useBoardStore = create<BoardStore>((set) => ({
       console.error('Стор: Ошибка при загрузке досок:', err)
       throw err
     } finally {
-      set({ isLoading: false })
+      set({ isLoadingBoards: false })
     }
   },
 }))

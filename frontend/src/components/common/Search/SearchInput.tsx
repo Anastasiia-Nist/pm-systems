@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { debounce } from '@/utils/debounce'
 import UiInput from '@/components/ui/UiInput'
 import UiButton from '@/components/ui/UiButton'
+import '@/styles/components/common/Search/SearchInput.css'
 
 interface SearchInputProps {
   onSearch: (query: string) => void
@@ -34,14 +35,14 @@ export default function SearchInput({ onSearch, placeholder }: SearchInputProps)
   }
 
   return (
-    <>
+    <div className="search__input">
       <UiInput
         value={query}
         placeholder={placeholder}
         onChange={handleChange}
         onKeyDown={handleSearch}
       />
-      <UiButton buttonText="Очистить" onClick={handleClear} />
-    </>
+      <UiButton onClick={handleClear}>Очистить</UiButton>
+    </div>
   )
 }

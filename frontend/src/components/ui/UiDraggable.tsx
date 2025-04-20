@@ -1,6 +1,7 @@
-import { useRef } from 'react'
 import { useDroppable, useDraggable } from '@dnd-kit/core'
 import { Task, TaskStatus } from '../../types/task'
+import Card from '../common/Card'
+import '@/styles/components/ui/UiDraggable.css'
 
 type Props = {
   id: TaskStatus
@@ -12,24 +13,15 @@ type Props = {
 export default function UiDraggable({ id, title, tasks, onCardClick }: Props) {
   const { setNodeRef: setDroppableRef } = useDroppable({ id })
 
-  const handleMouseDown = (id: number) => {
+  const handleClick = (id: number) => {
     onCardClick(id)
   }
   return (
-    <div
-      ref={setDroppableRef}
-      style={{
-        border: '1px solid #ccc',
-        padding: '8px',
-        width: 250,
-        minHeight: 300,
-        backgroundColor: '#f5f5f5',
-      }}
-    >
+    <div ref={setDroppableRef} className="droppable">
       <h2>{title}</h2>
-      <ul style={{ padding: 0, margin: 0, listStyle: 'none' }}>
+      <ul className="list droppable__list">
         {tasks.map((task) => (
-          <DraggableTask key={task.id} task={task} onClick={() => handleMouseDown(task.id)} />
+          <DraggableTask key={task.id} task={task} onClick={() => handleClick(task.id)} />
         ))}
       </ul>
     </div>
@@ -38,43 +30,24 @@ export default function UiDraggable({ id, title, tasks, onCardClick }: Props) {
 
 export function DraggableTask({ task, onClick }: { task: Task; onClick: () => void }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: task.id })
-  const wasDraggedRef = useRef(false)
 
   const style = {
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
-    border: '1px solid #888',
-    margin: '4px 0',
-    padding: '8px',
-    background: '#fff',
-    cursor: 'grab',
-    touchAction: 'none',
   }
 
-  const handleMouseDown = () => {
-    wasDraggedRef.current = false
-  }
-
-  const handleMouseMove = () => {
-    wasDraggedRef.current = true
-  }
-
-  const handleClick = () => {
-    if (!wasDraggedRef.current) {
-      onClick()
-    }
-  }
 
   return (
-    <li
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleClick}
-      style={style}
-    >
-      {task.title}
-    </li>
+    <>
+      <li
+        ref={setNodeRef}
+        className="droppable__item"
+        {...attributes}
+        {...listeners}
+        onClick={onClick}
+        style={style}
+      >
+        <Card title={task.title} />
+      </li>
+    </>
   )
 }

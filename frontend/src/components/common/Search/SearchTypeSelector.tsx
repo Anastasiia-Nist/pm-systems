@@ -1,4 +1,5 @@
 import UiInput from '@/components/ui/UiInput'
+import '@/styles/components/common/Search/SearchTypeSelector.css'
 
 interface Option {
   value: string
@@ -21,18 +22,17 @@ export default function SearchTypeSelector({
   }
 
   return (
-    <div>
+    <div className="search__checkbox">
       {options.map(({ value, label }) => (
-        <label key={value}>
-          <UiInput
-            type="radio"
-            name="searchType"
-            value={value}
-            checked={selectedValue === value}
-            onChange={handleChange}
-          />
-          {label}
-        </label>
+        <UiInput
+          type="radio"
+          name="searchType"
+          key={value}
+          label={label}
+          value={value}
+          checked={selectedValue === value}
+          onChange={handleChange}
+        />
       ))}
     </div>
   )

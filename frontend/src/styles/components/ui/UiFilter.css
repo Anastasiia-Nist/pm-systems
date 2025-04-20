@@ -1,0 +1,22 @@
+.filter__fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter__checkbox {
+    padding: 6px 12px;
+    font-size: 18px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.filter__checkbox input {
+   margin-right: 10px;
+}
+
+.filter__buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 16px;
+}

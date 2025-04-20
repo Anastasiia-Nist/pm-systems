@@ -1,3 +1,5 @@
+import '@/styles/components/ui/UiInput.css'
+
 interface UiInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   type?: React.HTMLInputTypeAttribute

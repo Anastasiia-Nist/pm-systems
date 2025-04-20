@@ -4,16 +4,16 @@ import { User } from '@/types/user'
 
 type UserStore = {
   users: User[]
-  isLoading: boolean
+  isLoadingUsers: boolean
   fetchUsers: () => Promise<void>
 }
 
 export const useUserStore = create<UserStore>((set) => ({
   users: [],
-  isLoading: false,
+  isLoadingUsers: false,
 
   fetchUsers: async () => {
-    set({ isLoading: true })
+    set({ isLoadingUsers: true })
     try {
       const data = await getAllUsers()
       set({ users: data })
@@ -21,7 +21,7 @@ export const useUserStore = create<UserStore>((set) => ({
       console.error('Стор: Ошибка при загрузке пользователей:', err)
       throw err
     } finally {
-      set({ isLoading: false })
+      set({ isLoadingUsers: false })
     }
   },
 }))

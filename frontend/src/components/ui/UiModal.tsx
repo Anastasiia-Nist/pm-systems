@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react'
-import '@/styles/components/UiModal.css'
+import '@/styles/components/ui/UiModal.css'
 
 type ModalProps = {
   open: boolean
