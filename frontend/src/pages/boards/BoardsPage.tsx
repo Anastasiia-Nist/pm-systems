@@ -6,6 +6,7 @@ import Card from '@components/common/Card'
 import UiLoader from '@components/ui/UiLoader'
 import { BOARD_ID_PATH } from '@/constants/index'
 import { Board } from '@/types/boards'
+import { requestHelper } from '@/utils/requestHelper'
 import '@/styles/pages/boards/BoardsPage.css'
 
 export default function BoardsPage() {
@@ -13,16 +14,11 @@ export default function BoardsPage() {
   const { boards, isLoadingBoards, fetchBoards, setCurrentBoard } = useBoardStore()
 
   useEffect(() => {
-    const loadBoards = async () => {
-      try {
-        await fetchBoards()
-      } catch (error) {
-        console.error('Ошибка при загрузке досок:', error)
-        toast.error('Не удалось загрузить доски')
-      }
-    }
+    const handleFetchBoards = requestHelper(fetchBoards, () => toast.error('Ошибка загрузки досок'))
 
-    loadBoards()
+    return () => {
+      handleFetchBoards()
+    }
   }, [fetchBoards])
 
   const handleClick = (board: Board) => {

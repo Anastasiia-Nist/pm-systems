@@ -8,6 +8,7 @@ export const requestHelper = <T>(
     if (err.name === 'AbortError') {
       console.log('Запрос прерван', err)
     }
+    console.log('Ошибка при выполнении запроса', err)
     if (onError) {
       onError(err)
     }

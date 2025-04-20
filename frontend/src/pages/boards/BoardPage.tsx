@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { requestHelper } from '@/utils/requestHelper'
 import { toast } from 'react-toastify'
 import UiDraggable from '@components/ui/UiDraggable'
 import Card from '@/components/common/Card'
@@ -65,9 +66,10 @@ export default function BoardPage() {
       }
     }
 
-    loadBoard()
+    const handleLoad = requestHelper(loadBoard, () => toast.error('Ошибка загрузки доски'))
 
     return () => {
+      handleLoad()
       setCurrentBoard(null)
     }
   }, [boardId])
