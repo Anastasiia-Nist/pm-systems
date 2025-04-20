@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { requestHelper } from '@/utils/requestHelper'
+import { useUserStore } from '@/store/useUserStore'
+import { useTaskStore } from '@/store/useTaskStore'
 import { toast } from 'react-toastify'
 import UiDraggable from '@components/ui/UiDraggable'
 import Card from '@/components/common/Card'
@@ -31,6 +33,8 @@ export default function BoardPage() {
   const { boardId } = useParams()
   const navigate = useNavigate()
   const { boards, currentBoard, setCurrentBoard, fetchBoards } = useBoardStore()
+  const { fetchUsers } = useUserStore()
+  const { tasks: allTasks } = useTaskStore()
   const [tasks, setTasks] = useState<Task[]>([])
   const [isBoardsLoaded, setIsBoardsLoaded] = useState(false)
   const { handleClick: handleEditClick } = useModalNavigation('edit')
@@ -54,6 +58,7 @@ export default function BoardPage() {
             return
           }
           await fetchBoards()
+          await fetchUsers()
           setIsBoardsLoaded(true)
         } else {
           navigate(BOARDS_PATH)
@@ -72,7 +77,7 @@ export default function BoardPage() {
       handleLoad()
       setCurrentBoard(null)
     }
-  }, [boardId])
+  }, [allTasks, boardId])
 
   useEffect(() => {
     if (isBoardsLoaded) {

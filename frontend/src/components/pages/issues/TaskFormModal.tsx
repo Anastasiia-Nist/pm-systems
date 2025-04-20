@@ -95,18 +95,30 @@ export default function TaskFormModal() {
     }
   }
 
-  return (
-    <UiModal open={isOpen} onClose={handleClose}>
-      <div>
-        <h2>{modalsMap[modalType as 'create' | 'edit']?.title}</h2>
+  const handleCloseModal = (event: React.MouseEvent<HTMLDivElement> | KeyboardEvent) => {
+    if (event.type === 'mousedown') {
+      if (event.target !== event.currentTarget) return
+      handleClose()
+    }
 
-        {isLoading && <UiLoader />}
-        <TaskForm
-          onSubmit={(data) => handleSubmitForm(data)}
-          initialData={taskData}
-          buttonText={modalsMap[modalType as 'create' | 'edit']?.buttonText}
-        />
-      </div>
+    if (event.type === 'keydown') {
+      const keyboardEvent = event as KeyboardEvent
+      if (keyboardEvent.key === 'Escape') {
+        handleClose()
+      }
+    }
+  }
+
+  return (
+    <UiModal open={isOpen} onClose={handleCloseModal}>
+      <h2 className="modal__title">{modalsMap[modalType as 'create' | 'edit']?.title}</h2>
+
+      {isLoading && <UiLoader />}
+      <TaskForm
+        onSubmit={(data) => handleSubmitForm(data)}
+        initialData={taskData}
+        buttonText={modalsMap[modalType as 'create' | 'edit']?.buttonText}
+      />
     </UiModal>
   )
 }

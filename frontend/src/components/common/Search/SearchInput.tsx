@@ -42,7 +42,9 @@ export default function SearchInput({ onSearch, placeholder }: SearchInputProps)
         onChange={handleChange}
         onKeyDown={handleSearch}
       />
-      <UiButton onClick={handleClear}>Очистить</UiButton>
+      <UiButton className="button--search-clear" onClick={handleClear}>
+        Очистить
+      </UiButton>
     </div>
   )
 }

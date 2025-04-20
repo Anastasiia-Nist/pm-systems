@@ -1,3 +1,9 @@
+.filter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .filter__fieldset {
     display: flex;
     flex-wrap: wrap;
@@ -16,7 +22,7 @@
 }
 
 .filter__buttons {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     gap: 16px;
 }

@@ -25,7 +25,9 @@ html,
 body {
     height: 100%;
 }
-
+.overflow {
+    overflow: hidden;
+}
 a {
     color: inherit;
 }

@@ -5,3 +5,7 @@
 
     gap: 12px;
 }
+
+.search__input > .input {
+    height: 100%;
+}

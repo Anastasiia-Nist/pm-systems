@@ -1,0 +1,26 @@
+.select  {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+}
+.select__label {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+.select select {
+    border: #fff5f6 1px solid;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 100%;
+    padding: 6px 12px;
+}
+
+.select__error {
+    color: #e72e50;
+    font-size: 14px;
+}
+
+.select__required {
+    color: #e72e50;
+}

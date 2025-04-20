@@ -1,3 +1,4 @@
+import '@/styles/components/ui/UiSelect.css'
 export type SelectOption = {
   value: string | number
   label: string
@@ -10,6 +11,7 @@ interface UiSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
   options: SelectOption[]
   required?: boolean
+  error?: string
 }
 
 export default function UiSelect({
@@ -19,11 +21,17 @@ export default function UiSelect({
   onChange,
   options,
   required,
+  error,
   ...rest
 }: UiSelectProps) {
   return (
     <div className="select">
-      {label && <label className="select__label">{label}</label>}
+      {label && (
+        <label className="select__label">
+          {required && <span className="select__required">* </span>}
+          {label}
+        </label>
+      )}
       <select name={name} value={value} onChange={onChange} required={required} {...rest}>
         <option value="">Выберите</option>
         {options.map((opt) => (
@@ -32,6 +40,7 @@ export default function UiSelect({
           </option>
         ))}
       </select>
+      {error && <p className="select__error">{error}</p>}
     </div>
   )
 }

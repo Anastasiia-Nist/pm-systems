@@ -21,7 +21,7 @@
 
 .modal {
     background: white;
-    padding: 1.5rem;
+    padding: 20px;
     border-radius: 8px;
     max-width: 500px;
     width: 100%;
@@ -31,4 +31,9 @@
 
 .modal-overlay.open .modal {
     transform: scale(1);
+}
+
+.modal__title {
+    font-size: 24px;
+    margin-bottom: 10px;
 }

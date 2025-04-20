@@ -10,6 +10,7 @@ import { useBoardStore } from '@/store/useBoardStore'
 import { TaskFormData } from '@/types/task'
 import UiButton from '@/components/ui/UiButton'
 import { BOARD_ID_PATH, ISSUES_PATH } from '@/constants/index'
+import '@/styles/components/pages/TaskForm.css'
 
 type TaskFormProps = {
   onSubmit: (values: TaskFormData) => void
@@ -23,8 +24,16 @@ export default function TaskForm({
   buttonText = 'Сохранить',
 }: TaskFormProps) {
   const taskFormRef = useRef<HTMLFormElement | null>(null)
-  const { values, handleChange, errors, isValid, resetForm, setIsValid, validateFormFields } =
-    useForm<TaskFormData>()
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    errors,
+    isValid,
+    resetForm,
+    setIsValid,
+    validateFormFields,
+  } = useForm<TaskFormData>()
   const { users } = useUserStore()
   const { boards } = useBoardStore()
 
@@ -71,39 +80,50 @@ export default function TaskForm({
   }
 
   return (
-    <UIForm onSubmit={handleSubmit} ref={taskFormRef}>
+    <UIForm onSubmit={handleSubmit} ref={taskFormRef} className="task-form">
       {fieldsWithOptions.map((field) => {
         const commonProps = {
           name: field.name,
           value: values[field.name] || '',
           onChange: handleChange,
-          required: field.required,
+          onBlur: handleBlur,
           disabled: field.disabled,
         }
 
         return (
-          <div key={field.name}>
+          <>
             {field.type === 'select' ? (
-              <UiSelect {...commonProps} label={field.label} options={field.options ?? []} />
+              <UiSelect
+                key={field.name}
+                {...commonProps}
+                label={field.label}
+                required={field.required}
+                options={field.options ?? []}
+                error={errors[field.name]}
+              />
             ) : (
-              <>
-                <UiInput
-                  type={field.type}
-                  label={field.label}
-                  {...commonProps}
-                  minLength={field.minLength}
-                  maxLength={field.maxLength}
-                />
-              </>
+              <UiInput
+                key={field.name}
+                type={field.type}
+                label={field.label}
+                required={field.required}
+                {...commonProps}
+                minLength={field.minLength}
+                maxLength={field.maxLength}
+                error={errors[field.name]}
+              />
             )}
-            {errors[field.name] && <span style={{ color: 'red' }}>{errors[field.name]}</span>}
-          </div>
+          </>
         )
       })}
-
-      {buttonText && <UiButton type="submit">{buttonText}</UiButton>}
-
-      {isShowNavigationToBoard && <Link to={`${BOARD_ID_PATH}/${boardId}`}>Перейти к доске</Link>}
+      <div className="task-form__buttons">
+        {isShowNavigationToBoard && (
+          <Link className="task-form__link" to={`${BOARD_ID_PATH}/${boardId}`}>
+            Перейти к доске
+          </Link>
+        )}
+        {buttonText && <UiButton type="submit">{buttonText}</UiButton>}
+      </div>
     </UIForm>
   )
 }

@@ -34,3 +34,7 @@
 .button--line:hover {
     background-color: transparent;
 }
+
+.button--search-clear {
+    padding: 8px 12px;
+}

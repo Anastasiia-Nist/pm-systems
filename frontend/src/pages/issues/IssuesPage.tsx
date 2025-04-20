@@ -26,8 +26,8 @@ export default function IssuesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchType, setSearchType] = useState<SearchType>('title')
 
-  const [checkedFilters, setCheckedFilters] = useState<TaskFilters>(clearedTaskFilters)
-  const [appliedFilters, setAppliedFilters] = useState<TaskFilters>(clearedTaskFilters)
+  const [checkedFilters, setCheckedFilters] = useState<TaskFilters>({ ...clearedTaskFilters })
+  const [appliedFilters, setAppliedFilters] = useState<TaskFilters>({ ...clearedTaskFilters })
 
   const { handleClick: handleEditClick } = useModalNavigation('edit')
   const { handleClick: handleCreateClick } = useModalNavigation('create')
@@ -109,9 +109,9 @@ export default function IssuesPage() {
   }
 
   const handleResetFilters = () => {
-    setCheckedFilters(clearedTaskFilters)
-    setAppliedFilters(clearedTaskFilters)
-    filterTasks(searchQuery, searchType, clearedTaskFilters)
+    setCheckedFilters({ ...clearedTaskFilters })
+    setAppliedFilters({ ...clearedTaskFilters })
+    filterTasks(searchQuery, searchType, { ...clearedTaskFilters })
   }
 
   const handleCardClick = (boardId: number, taskId: number) => {
