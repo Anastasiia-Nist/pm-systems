@@ -1,5 +1,5 @@
 import UiInput from '@/components/ui/UiInput'
-import '@/styles/components/common/SearchT/SearchTypeSelector.css'
+import '@/styles/components/common/Search/SearchTypeSelector.css'
 
 interface Option {
   value: string
