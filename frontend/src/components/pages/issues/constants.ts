@@ -35,7 +35,7 @@ export const TASK_FORM_FIELDS: TaskFormField[] = [
     type: 'textarea',
     required: true,
     minLength: 10,
-    maxLength: 500,
+    maxLength: 100,
   },
   {
     name: 'boardId',

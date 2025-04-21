@@ -5,6 +5,7 @@ import useForm from '@/hooks/useForm'
 import { TASK_FORM_FIELDS } from './constants'
 import UiInput from '@components/ui/UiInput'
 import UiSelect from '@/components/ui/UiSelect'
+import UiTextarea from '@components/ui/UiTextarea'
 import { useUserStore } from '@/store/useUserStore'
 import { useBoardStore } from '@/store/useBoardStore'
 import { TaskFormData } from '@/types/task'
@@ -90,32 +91,47 @@ export default function TaskForm({
           disabled: field.disabled,
         }
 
+        if (field.type === 'select') {
+          return (
+            <UiSelect
+              key={field.name}
+              {...commonProps}
+              label={field.label}
+              required={field.required}
+              options={field.options ?? []}
+              error={errors[field.name]}
+            />
+          )
+        }
+
+        if (field.type === 'textarea') {
+          return (
+            <UiTextarea
+              key={field.name}
+              label={field.label}
+              required={field.required}
+              {...commonProps}
+              minLength={field.minLength}
+              maxLength={field.maxLength}
+              error={errors[field.name]}
+            />
+          )
+        }
+
         return (
-          <>
-            {field.type === 'select' ? (
-              <UiSelect
-                key={field.name}
-                {...commonProps}
-                label={field.label}
-                required={field.required}
-                options={field.options ?? []}
-                error={errors[field.name]}
-              />
-            ) : (
-              <UiInput
-                key={field.name}
-                type={field.type}
-                label={field.label}
-                required={field.required}
-                {...commonProps}
-                minLength={field.minLength}
-                maxLength={field.maxLength}
-                error={errors[field.name]}
-              />
-            )}
-          </>
+          <UiInput
+            key={field.name}
+            type={field.type}
+            label={field.label}
+            required={field.required}
+            {...commonProps}
+            minLength={field.minLength}
+            maxLength={field.maxLength}
+            error={errors[field.name]}
+          />
         )
       })}
+
       <div className="task-form__buttons">
         {isShowNavigationToBoard && (
           <Link className="task-form__link" to={`${BOARD_ID_PATH}/${boardId}`}>
