@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useAppInit } from '@/hooks/useAppInit'
 import { ToastContainer } from 'react-toastify'
 import Layout from '@/layout/Layout'
 import BoardsPage from './pages/boards/BoardsPage'
@@ -18,6 +20,11 @@ const routes = [
 ]
 
 export default function App() {
+  const { initApp } = useAppInit()
+
+  useEffect(() => {
+    initApp()
+  }, [initApp])
   return (
     <Layout>
       <Routes>

@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 import Card from '@components/common/Card'
 import { toast } from 'react-toastify'
 import { requestHelper } from '@/utils/requestHelper'
-import { useUserStore } from '@/store/useUserStore'
 import { useTaskStore } from '@/store/useTaskStore'
-import { useBoardStore } from '@/store/useBoardStore'
 import SearchInput from '@/components/common/Search/SearchInput'
 import SearchTypeSelector from '@/components/common/Search/SearchTypeSelector'
 import TaskFilter from '@/components/pages/issues/TaskFilter'
@@ -16,9 +14,7 @@ import { Task, SearchType, TaskFilters, FilterValue } from '@/types/task'
 import '@/styles/pages/IssuesPage.css'
 
 export default function IssuesPage() {
-  const { isLoadingUsers, fetchUsers } = useUserStore()
   const { tasks, isLoadingTasks, fetchTasks } = useTaskStore()
-  const { isLoadingBoards, fetchBoards } = useBoardStore()
 
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
   const [showFilters, setShowFilters] = useState(false)
@@ -33,22 +29,14 @@ export default function IssuesPage() {
   const { handleClick: handleCreateClick } = useModalNavigation('create')
 
   useEffect(() => {
-    const handleFetchUsers = requestHelper(fetchUsers, () =>
-      toast.error('Не удалось загрузить пользователей')
-    )
-
-    const handleFetchBoards = requestHelper(fetchBoards, () => toast.error('Ошибка загрузки досок'))
-
     const handleFetchTasks = requestHelper(fetchTasks, () =>
       toast.error('Не удалось загрузить задачи')
     )
 
     return () => {
-      handleFetchUsers()
-      handleFetchBoards()
       handleFetchTasks()
     }
-  }, [fetchUsers, fetchBoards, fetchTasks])
+  }, [fetchTasks])
 
   useEffect(() => {
     setFilteredTasks(tasks)
@@ -160,7 +148,7 @@ export default function IssuesPage() {
       <section className="tasks">
         <h1 className="title">Задачи</h1>
 
-        {isLoadingUsers || isLoadingBoards || isLoadingTasks ? (
+        {isLoadingTasks ? (
           <UiLoader />
         ) : (
           <div className="list">

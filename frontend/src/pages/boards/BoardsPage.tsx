@@ -11,7 +11,7 @@ import '@/styles/pages/boards/BoardsPage.css'
 
 export default function BoardsPage() {
   const navigate = useNavigate()
-  const { boards, isLoadingBoards, fetchBoards, setCurrentBoard } = useBoardStore()
+  const { boards, isLoadingBoards, fetchBoards } = useBoardStore()
 
   useEffect(() => {
     const handleFetchBoards = requestHelper(fetchBoards, () => toast.error('Ошибка загрузки досок'))
@@ -22,7 +22,6 @@ export default function BoardsPage() {
   }, [fetchBoards])
 
   const handleClick = (board: Board) => {
-    setCurrentBoard(board)
     navigate(`${BOARD_ID_PATH}/${board.id}`)
   }
   return (

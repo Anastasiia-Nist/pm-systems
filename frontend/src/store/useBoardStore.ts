@@ -4,16 +4,13 @@ import { Board } from '@/types/boards'
 
 type BoardStore = {
   boards: Board[]
-  currentBoard: Board | null
-  setCurrentBoard: (board: Board | null) => void
   isLoadingBoards: boolean
   fetchBoards: () => Promise<void>
+  findBoardById: (id: number) => Board | undefined
 }
 
-export const useBoardStore = create<BoardStore>((set) => ({
+export const useBoardStore = create<BoardStore>((set, get) => ({
   boards: [],
-  currentBoard: null,
-  setCurrentBoard: (board) => set({ currentBoard: board }),
   isLoadingBoards: false,
 
   fetchBoards: async () => {
@@ -27,5 +24,10 @@ export const useBoardStore = create<BoardStore>((set) => ({
     } finally {
       set({ isLoadingBoards: false })
     }
+  },
+
+  findBoardById: (id) => {
+    console.log('findBoardById', get().boards)
+    return get().boards.find((board) => board.id === id)
   },
 }))

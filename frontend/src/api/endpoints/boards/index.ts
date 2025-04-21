@@ -1,9 +1,9 @@
 import { api } from '@/api/requestManager/requestManager'
 import { BOARDS_PATH } from '@/constants/index'
 
-export async function getAllBoards() {
+export async function getAllBoards(signal?: AbortSignal) {
   try {
-    const { data } = await api.get(BOARDS_PATH)
+    const { data } = await api.get(BOARDS_PATH, signal)
     return data
   } catch (error) {
     console.error(`requestManager(${BOARDS_PATH}):`, error)
@@ -11,7 +11,7 @@ export async function getAllBoards() {
   }
 }
 
-export async function getBoardById(boardId: number) {
+export async function getTasksBoardById(boardId: number) {
   try {
     const { data } = await api.get(`${BOARDS_PATH}/${boardId}`)
     return data

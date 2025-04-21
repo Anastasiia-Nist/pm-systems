@@ -1,9 +1,9 @@
 import { api } from '@/api/requestManager/requestManager'
 import { TaskFormData, TaskStatus } from '@/types/task'
 
-export async function getAllTasks() {
+export async function getAllTasks(signal?: AbortSignal) {
   try {
-    const { data } = await api.get('/tasks')
+    const { data } = await api.get('/tasks', signal)
     return data
   } catch (error) {
     console.error('requestManager(/tasks):', error)

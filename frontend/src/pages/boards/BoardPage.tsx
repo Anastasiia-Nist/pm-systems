@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { requestHelper } from '@/utils/requestHelper'
-import { useUserStore } from '@/store/useUserStore'
 import { useTaskStore } from '@/store/useTaskStore'
 import { toast } from 'react-toastify'
 import UiDraggable from '@components/ui/UiDraggable'
 import Card from '@/components/common/Card'
 import UiLoader from '@components/ui/UiLoader'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
-import { getBoardById, updateTaskStatus } from '@/api'
+import { getTasksBoardById, updateTaskStatus } from '@/api'
 import { BOARDS_PATH } from '@/constants'
 import { useBoardStore } from '@/store/useBoardStore'
 import { Board } from '@/types/boards'
@@ -32,11 +31,10 @@ import {
 export default function BoardPage() {
   const { boardId } = useParams()
   const navigate = useNavigate()
-  const { boards, currentBoard, setCurrentBoard, fetchBoards } = useBoardStore()
-  const { fetchUsers } = useUserStore()
+  const { boards, findBoardById } = useBoardStore()
+  const [currentBoard, setCurrentBoard] = useState<Board | undefined | null>(null)
   const { tasks: allTasks } = useTaskStore()
   const [tasks, setTasks] = useState<Task[]>([])
-  const [isBoardsLoaded, setIsBoardsLoaded] = useState(false)
   const { handleClick: handleEditClick } = useModalNavigation('edit')
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -52,14 +50,8 @@ export default function BoardPage() {
       try {
         if (boardId && +boardId) {
           setIsLoading(true)
-          const tasks = await getBoardById(+boardId)
+          const tasks = await getTasksBoardById(+boardId)
           setTasks(tasks)
-          if (currentBoard?.id === Number(boardId)) {
-            return
-          }
-          await fetchBoards()
-          await fetchUsers()
-          setIsBoardsLoaded(true)
         } else {
           navigate(BOARDS_PATH)
         }
@@ -75,18 +67,15 @@ export default function BoardPage() {
 
     return () => {
       handleLoad()
-      setCurrentBoard(null)
     }
   }, [allTasks, boardId])
 
   useEffect(() => {
-    if (isBoardsLoaded) {
-      const board = boards?.find((b: Board) => b.id === Number(boardId))
-      if (board) {
-        setCurrentBoard(board)
-      }
+    if (boardId && +boardId) {
+      const board = findBoardById(+boardId)
+      setCurrentBoard(board)
     }
-  }, [boards, isBoardsLoaded])
+  }, [boards])
 
   const handleCardClick = (taskId: number) => {
     handleEditClick(currentBoard?.id, taskId)
@@ -129,7 +118,7 @@ export default function BoardPage() {
       console.error('Не удалось обновить статус задачи:', error)
       toast.error('Не удалось обновить статус задачи')
       if (boardId && +boardId) {
-        await getBoardById(+boardId)
+        await getTasksBoardById(+boardId)
         setTasks(tasks)
       }
     }
