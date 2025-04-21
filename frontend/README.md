@@ -1,54 +1,65 @@
-# React + TypeScript + Vite
+# Project Management Systems
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🛠️ Установка и запуск проекта
 
-Currently, two official plugins are available:
+## 📦 Зависимости
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Для запуска проекта требуется установленный **Docker** и **Docker Compose**.
 
-## Expanding the ESLint configuration
+- [Установка Docker](https://www.docker.com/get-started)
+- [Установка Docker Compose](https://docs.docker.com/compose/install/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🔍 Проверка версий
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Убедитесь, что Docker и Docker Compose установлены корректно и доступны в терминале:
+
+```bash
+docker --version
+docker-compose --version
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🐳 Запуск через Docker Compose
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+docker-compose up --build
 ```
+
+После запуска приложение будет оступно по адресу:
+- Бекенд http://127.0.0.1:8080
+- Фронтенд http://127.0.0.1:5173
+
+## 🧪Запуск фронтенда локально:
+
+### Бекенд
+- Разверните сервер бекенда как описано в [инструкции](https://github.com/avito-tech/tech-internship/blob/main/Tech%20Internships/Frontend/Frontend-trainee-assignment-spring-2025/server/README.md)
+### Фронтенд
+- Перейдите в папку frontend
+```bash
+cd frontend
+```
+- Установите зависимости
+```bash
+npm install
+```
+- Запустите проект
+```bash
+npm run dev
+```
+После запуска приложение будет оступно по адресу:
+- Бекенд http://127.0.0.1:8080
+- Фронтенд http://localhost:5173
+
+## 💡 Технологии
+
+Проект построен с использованием современного стека инструментов, обеспечивающего быструю разработку, типобезопасность и удобство поддержки:
+
+| Технология              | Назначение                                                                |
+|-------------------------|---------------------------------------------------------------------------|
+| **TypeScript**          | Статическая типизация                                                     |
+| **Vite**                | Современный сборщик                                                       |
+| **Zustand**             | state-менеджер для React                                                  |
+| **@dnd-kit/core**       | Библиотека для drag-and-drop                                              |
+| **react-toastify**      | Всплывающие уведомления                                                   |
+| **ESLint + Prettier**   | Автоформатирование кода                                                   |
+| **Docker Compose**      | Быстрый запуск всех сервисов одной командой                               |
+
