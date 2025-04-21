@@ -27,7 +27,6 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
   },
 
   findBoardById: (id) => {
-    console.log('findBoardById', get().boards)
     return get().boards.find((board) => board.id === id)
   },
 }))

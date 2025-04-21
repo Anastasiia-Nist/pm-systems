@@ -7,8 +7,8 @@ export const clearedTaskFilters = {
   statuses: [],
 }
 export const searchTypes = [
-  { value: 'title', label: 'По названию' },
-  { value: 'assignee', label: 'По исполнителю' },
+  { value: 'title', label: 'Поиск по названию' },
+  { value: 'assignee', label: 'Поиск по исполнителю' },
 ]
 
 export const defaultTaskForm = {

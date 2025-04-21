@@ -1,13 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAppInit } from '@/hooks/useAppInit'
-import { ToastContainer } from 'react-toastify'
 import Layout from '@/layout/Layout'
 import BoardsPage from './pages/boards/BoardsPage'
 import BoardPage from './pages/boards/BoardPage'
 import IssuesPage from './pages/issues/IssuesPage'
 import NotFoundPage from './pages/NotFoundPage'
-import TaskFormModal from '@/components/pages/issues/TaskFormModal'
+
 import { BOARDS_PATH, BOARD_ID_PATH, ISSUES_PATH } from './constants'
 import './index.css'
 
@@ -32,8 +31,6 @@ export default function App() {
           <Route key={index} path={route.path} element={route.element} />
         ))}
       </Routes>
-      <ToastContainer />
-      <TaskFormModal />
     </Layout>
   )
 }

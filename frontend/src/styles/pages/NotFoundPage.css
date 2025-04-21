@@ -1,0 +1,10 @@
+.not-found {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.not-found__link {
+    color: #a27c82;
+}

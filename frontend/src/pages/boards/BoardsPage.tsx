@@ -28,19 +28,16 @@ export default function BoardsPage() {
     <section className="boards">
       <h1 className="title">Проекты</h1>
 
-      {isLoadingBoards ? (
-        <UiLoader />
-      ) : (
-        <div className="list">
-          <ul className="boards__list">
-            {boards.map((board) => (
-              <li className="boards__item" key={board.id}>
-                <Card title={board.name} onClick={() => handleClick(board)} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="list">
+        <ul className="boards__list">
+          {boards.map((board) => (
+            <li className="boards__item" key={board.id}>
+              <Card title={board.name} onClick={() => handleClick(board)} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <UiLoader isLoading={isLoadingBoards} />
     </section>
   )
 }

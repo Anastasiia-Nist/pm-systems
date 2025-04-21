@@ -77,7 +77,13 @@ export default function TaskForm({
     if (!isValid) {
       return
     }
-    onSubmit(values)
+    const filteredValues = Object.fromEntries(
+      Object.entries(values).filter(([name]) => {
+        const field = fieldsWithOptions.find((field) => field.name === name)
+        return !field?.disabled
+      })
+    )
+    onSubmit(filteredValues as TaskFormData)
   }
 
   return (

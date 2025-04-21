@@ -1,4 +1,4 @@
 @import url(./vendor/fonts/fonts.css);
-@import url(./styles/globals/reset.css);
-@import url(./styles/globals/normalize.css);
+@import url(./vendor/styles/reset.css);
+@import url(./vendor/styles/normalize.css);
 @import url(./styles/globals/index.css);

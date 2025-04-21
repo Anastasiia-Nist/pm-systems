@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
 
-    margin-bottom: 18px;
+    margin: 18px 0;
 
     gap: 16px;
 }
@@ -16,13 +16,13 @@
 }
 .task-toolbar__button {
     position: absolute;
-    right: 4px;
-    bottom: 0;
+    right: 10px;
+    top: -20px;
 }
 .task-toolbar__button_badge {
     position: absolute;
-    right: 0;
-    bottom: 8px;
+    right: 6px;
+    top: -24px;
 
     color: #a27c82;
 
@@ -42,7 +42,6 @@
     padding: 10px;
 
     border-radius: 10px;
-    background-color: #faf6f6;
 
     gap: 16px;
 }

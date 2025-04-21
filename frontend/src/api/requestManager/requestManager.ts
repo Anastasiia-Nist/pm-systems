@@ -17,7 +17,6 @@ class ApiClient {
   private async request(endpoint: string, options: RequestInit = {}, signal?: AbortSignal) {
     const controllerOptions = { ...options, signal }
     const response = await fetch(`${this.baseUrl}${endpoint}`, controllerOptions)
-    await new Promise((resolve) => setTimeout(resolve, 500))
     return handleResponse(response)
   }
 

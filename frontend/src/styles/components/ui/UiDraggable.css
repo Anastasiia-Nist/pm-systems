@@ -1,10 +1,9 @@
 .droppable {
     width: 100%;
-    min-height: 500px;
+    min-height: 70vh;
     padding: 8px;
 
     border-radius: 10px;
-    background-color: #faf6f6;
 }
 
 @media (max-width: 480px) {
@@ -24,6 +23,8 @@
 .droppable__list {
     display: flex;
     flex-direction: column;
+
+    border-radius: 10px;
 
     padding: 10px;
 }

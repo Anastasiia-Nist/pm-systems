@@ -53,6 +53,7 @@ export default function BoardPage() {
           const tasks = await getTasksBoardById(+boardId)
           setTasks(tasks)
         } else {
+          toast.error('Некорректная ссылка на доску')
           navigate(BOARDS_PATH)
         }
       } catch (error) {
@@ -131,31 +132,29 @@ export default function BoardPage() {
   return (
     <section className="board">
       <h1 className="title">Проект: {currentBoard?.name}</h1>
-      {isLoading ? (
-        <UiLoader />
-      ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <div className="board__columns">
-            {Object.values(TaskStatus).map((status) => (
-              <UiDraggable
-                key={status}
-                id={status}
-                title={statusLabels[status]}
-                tasks={tasks.filter((task) => task.status === status)}
-                onCardClick={handleCardClick}
-              />
-            ))}
-          </div>
-          <DragOverlay dropAnimation={null}>
-            {activeId ? <Card title={tasks.find((task) => task.id === activeId)?.title} /> : null}
-          </DragOverlay>
-        </DndContext>
-      )}
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="board__columns">
+          {Object.values(TaskStatus).map((status) => (
+            <UiDraggable
+              key={status}
+              id={status}
+              title={statusLabels[status]}
+              tasks={tasks.filter((task) => task.status === status)}
+              onCardClick={handleCardClick}
+            />
+          ))}
+        </div>
+        <DragOverlay dropAnimation={null}>
+          {activeId ? <Card title={tasks.find((task) => task.id === activeId)?.title} /> : null}
+        </DragOverlay>
+      </DndContext>
+      <UiLoader isLoading={isLoading} />
     </section>
   )
 }

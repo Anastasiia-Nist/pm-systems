@@ -19,7 +19,7 @@ export default function UiDraggable({ id, title, tasks, onCardClick }: Props) {
   return (
     <div ref={setDroppableRef} className="droppable">
       <h2>{title}</h2>
-      <ul className="list droppable__list">
+      <ul className="droppable__list list">
         {tasks.map((task) => (
           <DraggableTask key={task.id} task={task} onClick={() => handleClick(task.id)} />
         ))}

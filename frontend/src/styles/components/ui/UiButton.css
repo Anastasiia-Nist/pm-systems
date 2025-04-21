@@ -7,14 +7,14 @@
     color: #a27c82;
     border: none;
     border-radius: 10px;
-    background-color: #fff5f6;
+    background-color: #ffe0e5;
 
     font-size: 20px;
 }
 
 .button:hover {
     color: #775c60;
-    background-color: #ffe7eb;
+    background-color: #ffb2bf;
 }
 
 .button:disabled {
@@ -23,8 +23,13 @@
     background-color: #fcfafa;
 }
 
+.button--light {
+    background-color: #fff;
+    color:#6d5256;
+}
+
 .button--light:hover {
-    background-color: #fcfafa;
+    background-color: #edb2b2;
 }
 
 .button--line {

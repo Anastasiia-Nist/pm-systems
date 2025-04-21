@@ -5,7 +5,6 @@ import { useTaskStore } from '@/store/useTaskStore'
 import { toast } from 'react-toastify'
 import UiModal from '@components/ui/UiModal'
 import TaskForm from '@components/pages/issues/TaskForm'
-import UiLoader from '@components/ui/UiLoader'
 import { defaultTaskForm } from '@components/pages/issues/constants'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { createTask, updateTask } from '@/api'
@@ -13,7 +12,6 @@ import { TaskFormData } from '@/types/task'
 
 export default function TaskFormModal() {
   const [taskData, setTaskData] = useState<TaskFormData>(defaultTaskForm)
-  const [isLoading, setIsLoading] = useState(false)
   const { fetchTasks } = useTaskStore()
 
   const { handleClose } = useModalNavigation('close')
@@ -30,7 +28,6 @@ export default function TaskFormModal() {
     const fetchTaskData = async () => {
       if (modalType === 'edit' && taskId) {
         try {
-          setIsLoading(true)
           const task = await getTaskById(Number(taskId))
           setTaskData({
             title: task.title,
@@ -44,8 +41,6 @@ export default function TaskFormModal() {
           console.error('Не удалось загрузить данные задачи', error)
           toast.error('Не удалось загрузить данные задачи')
           handleClose()
-        } finally {
-          setIsLoading(false)
         }
       } else {
         setTaskData(defaultTaskForm)
@@ -95,30 +90,16 @@ export default function TaskFormModal() {
     }
   }
 
-  const handleCloseModal = (event: React.MouseEvent<HTMLDivElement> | KeyboardEvent) => {
-    if (event.type === 'mousedown') {
-      if (event.target !== event.currentTarget) return
-      handleClose()
-    }
-
-    if (event.type === 'keydown') {
-      const keyboardEvent = event as KeyboardEvent
-      if (keyboardEvent.key === 'Escape') {
-        handleClose()
-      }
-    }
-  }
-
   return (
-    <UiModal open={isOpen} onClose={handleCloseModal}>
-      <h2 className="modal__title">{modalsMap[modalType as 'create' | 'edit']?.title}</h2>
-
-      {isLoading && <UiLoader />}
-      <TaskForm
-        onSubmit={(data) => handleSubmitForm(data)}
-        initialData={taskData}
-        buttonText={modalsMap[modalType as 'create' | 'edit']?.buttonText}
-      />
-    </UiModal>
+    <>
+      <UiModal open={isOpen} onClose={handleClose}>
+        <h2 className="modal__title">{modalsMap[modalType as 'create' | 'edit']?.title}</h2>
+        <TaskForm
+          onSubmit={(data) => handleSubmitForm(data)}
+          initialData={taskData}
+          buttonText={modalsMap[modalType as 'create' | 'edit']?.buttonText}
+        />
+      </UiModal>
+    </>
   )
 }

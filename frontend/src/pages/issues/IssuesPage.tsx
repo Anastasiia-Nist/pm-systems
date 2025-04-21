@@ -116,12 +116,15 @@ export default function IssuesPage() {
     <>
       <div className="task-toolbar">
         <div className="task-toolbar__search">
-          <SearchInput onSearch={onSearch} placeholder="Поиск" />
-          <SearchTypeSelector
-            options={searchTypes}
-            selectedValue={searchType}
-            onChange={handleSearchTypeChange}
-          />
+          <fieldset>
+            <legend>Поиск</legend>
+            <SearchInput onSearch={onSearch} placeholder="Поиск" />
+            <SearchTypeSelector
+              options={searchTypes}
+              selectedValue={searchType}
+              onChange={handleSearchTypeChange}
+            />
+          </fieldset>
           <UiButton
             onClick={handleToggleShowFilters}
             className="button--line task-toolbar__button"
@@ -148,22 +151,20 @@ export default function IssuesPage() {
       <section className="tasks">
         <h1 className="title">Задачи</h1>
 
-        {isLoadingTasks ? (
-          <UiLoader />
-        ) : (
-          <div className="list">
-            <ul className="tasks__list">
-              {filteredTasks.map((task) => (
-                <li className="tasks__item" key={task.id}>
-                  <Card title={task.title} onClick={() => handleCardClick(task.boardId, task.id)} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div className="list">
+          <ul className="tasks__list">
+            {filteredTasks.map((task) => (
+              <li className="tasks__item" key={task.id}>
+                <Card title={task.title} onClick={() => handleCardClick(task.boardId, task.id)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <UiButton onClick={handleCreateClick} type="button" disabled={false}>
           Создать задачу
         </UiButton>
+        <UiLoader isLoading={isLoadingTasks} />
       </section>
     </>
   )
