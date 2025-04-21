@@ -63,35 +63,13 @@ a {
 }
 
 .list {
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    min-height: 60vh;
-    max-height: 60vh;
     margin: 20px 0;
     padding: 10px;
     padding-right: 8px;
 
+    border-radius: 10px;
     background-color: #faf6f6;
 
-    scroll-behavior: smooth;
-}
-
-@media (max-width: 480px) {
-    .list {
-        min-height: 300px;
-        max-height: 300px;
-        margin: 10px 0;
-    }
-}
-
-.list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.list::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #e3a5b0;
 }
 
 .Toastify {

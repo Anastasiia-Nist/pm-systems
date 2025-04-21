@@ -22,9 +22,24 @@
 
 .droppable__list {
     display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
     flex-direction: column;
 
+    min-height: 60vh;
+    max-height: 60vh;
     padding: 10px;
 
     border-radius: 10px;
+
+    scroll-behavior: smooth;
+}
+
+.droppable__list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.droppable__list::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #e3a5b0;
 }
