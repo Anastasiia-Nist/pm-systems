@@ -24,8 +24,8 @@
 }
 
 .button--light {
-    background-color: #fff;
     color:#6d5256;
+    background-color: #fff;
 }
 
 .button--light:hover {

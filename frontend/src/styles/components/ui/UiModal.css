@@ -24,11 +24,12 @@
 }
 
 .modal {
+    overflow-y: auto;
+
     width: 100%;
     max-width: 500px;
-    overflow-y: auto;
-    padding: 20px;
     max-height: 100vh;
+    padding: 20px;
 
     transition: transform 0.3s ease;
     transform: scale(0.95);
@@ -48,13 +49,14 @@
 }
 
 .modal-overlay__close {
-    width: 30px;
-    text-align: center;
     position: absolute;
     top: 10px;
     right: 10px;
 
+    width: 30px;
+
     cursor: pointer;
+    text-align: center;
 }
 
 .modal-overlay__close > span {

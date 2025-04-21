@@ -65,8 +65,9 @@ a {
 .list {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 60vh;
+
     min-height: 60vh;
+    max-height: 60vh;
     margin: 20px 0;
     padding: 10px;
     padding-right: 8px;
@@ -78,8 +79,8 @@ a {
 
 @media (max-width: 480px) {
     .list {
-        max-height: 300px;
         min-height: 300px;
+        max-height: 300px;
         margin: 10px 0;
     }
 }
