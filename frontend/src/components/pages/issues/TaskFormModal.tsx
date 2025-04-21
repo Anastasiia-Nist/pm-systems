@@ -55,7 +55,7 @@ export default function TaskFormModal() {
     description: data.description,
     priority: data.priority,
     status: data.status,
-    boardId: data.boardId ? Number(boardId) : null,
+    boardId: data.boardId ? Number(data.boardId) : null,
     assigneeId: data.assigneeId ? Number(data.assigneeId) : null,
   })
 

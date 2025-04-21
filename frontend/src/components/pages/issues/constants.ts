@@ -80,7 +80,7 @@ export const TASK_FORM_FIELDS: TaskFormField[] = [
     label: 'Исполнитель',
     type: 'select',
     options: [],
-    required: false,
+    required: true,
     getOptions: (users) => {
       return (users as User[]).map((user) => ({
         value: user.id,
