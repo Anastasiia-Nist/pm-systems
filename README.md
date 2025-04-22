@@ -21,6 +21,10 @@ docker-compose --version
 
 ## 🐳 Запуск через Docker Compose
 
+Для Windows и macOS надо запустить сначала Docker Desktop приложение
+
+Запустите Docker Compose
+
 ```bash
 docker-compose up --build
 ```
